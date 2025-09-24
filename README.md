@@ -2,6 +2,10 @@
 
 A unified interface for Linux-based desktop sandbox providers. It can be used to create virtual desktop environments for AI agents to interact with graphical applications.
 
+<p align="center">
+  <img width="500" alt="screenshot" src="https://github.com/user-attachments/assets/02c63946-8f6d-4ede-b695-5ac089df04c6" />
+</p>
+
 This repository is based on [`sandboxjs`](https://github.com/jamesmurdza/sandboxjs), an abstraction layer for cloud sandbox providers.
 
 ## Usage
