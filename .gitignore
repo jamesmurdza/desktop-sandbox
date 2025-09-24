@@ -19,3 +19,8 @@ build/
 # OS
 .DS_Store
 npm-debug.log*
+
+# Files created when building templates
+/template/Dockerfile
+/template/Dockerfile.*
+/template/e2b.toml
