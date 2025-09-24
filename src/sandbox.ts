@@ -68,12 +68,13 @@ export class Sandbox {
 	 */
 	static async create(
 		provider: string,
-		opts?: SandboxOpts & { template: "gitwit-desktop" }
+		opts?: SandboxOpts & { template?: string }
 	): Promise<Sandbox> {
 		const display = opts?.display || ':0'
 		const sandboxOpts = {
 			...opts,
 			envs: { ...opts?.envs, DISPLAY: display },
+			template: opts?.template ?? "gitwit-desktop",
 		}
 		const baseSandbox = await SandboxBase.create(provider, sandboxOpts)
 		const desktopSandbox = new Sandbox(baseSandbox)
