@@ -1,17 +1,12 @@
 import { buildTemplate } from "@gitwit/sandbox";
 
+const templateDir = "./template"
+const templateName = "gitwit-desktop"
 
 await buildTemplate(
-    "e2b", 
-    "/mnt/f/Github/sandboxjs/template", 
-    "gitwit-desktop", 
-    { cpuCount: 2, memoryMB: 1024 }
+    "e2b", templateDir, templateName, { cpuCount: 2, memoryMB: 1024 }
 )
 
-
 await buildTemplate(
-    "daytona",
-    "/mnt/f/Github/sandboxjs/template",
-    "gitwit-desktop",
-    { cpu: 2, memory: 2, disk: 2 }
+    "daytona", templateDir, templateName, { cpu: 2, memory: 2, disk: 2, gpu: 1 }
 )

@@ -1,7 +1,7 @@
-import {
+import { 
 	Sandbox as SandboxBase,
-	CreateSandboxOptions as SandboxOptionsBase,
-	RunCommandOptions
+	CreateSandboxOptions as SandboxOptionsBase, 
+	RunCommandOptions 
 } from '@gitwit/sandbox'
 
 import { generateRandomString, mapKey, mapMouseButton } from './utils.js'
@@ -459,12 +459,11 @@ export class Sandbox {
 		await this.runCommand(
 			`Xvfb ${display} -ac -screen 0 ${width}x${height}x24 ` +
 				`-retro -dpi ${opts?.dpi ?? 96} -nolisten tcp -nolisten unix`,
-			{ background: true, timeoutMs: 30000 }
+			{ background: true, timeoutMs: 0 }
 		)
 		const hasStarted = await this.waitAndVerify(
 			`xdpyinfo -display ${display}`,
 			(r: { exitCode: number; output: string }) => r.exitCode === 0,
-			30
 		)
 		if (!hasStarted) {
 			throw new Error('Could not start Xvfb')

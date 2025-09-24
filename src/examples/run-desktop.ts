@@ -4,42 +4,50 @@ config()
 import { Sandbox } from '../index.js'
 import { writeFileSync } from 'fs'
 
-console.log('Starting desktop sandbox...')
+async function run(provider: string) {
 
-console.time('--> Sandbox creation time')
-const desktop = await Sandbox.create("daytona", { template: "gitwit-desktop" })
-console.timeEnd('--> Sandbox creation time')
+  console.log(`Starting ${provider} desktop sandbox...`)
 
-console.log('Desktop Sandbox started, ID:', desktop.id())
-console.log('Screen size:', await desktop.getScreenSize())
+  console.time('--> Sandbox creation time')
+  const desktop = await Sandbox.create(provider)
+  console.timeEnd('--> Sandbox creation time')
 
-await desktop.stream.start({
-  requireAuth: true,
-})
+  console.log(`Desktop Sandbox started, ID: ${desktop.id()}`)
+  console.log(`Screen size: ${await desktop.getScreenSize()}`)
 
-const authKey = await desktop.stream.getAuthKey()
-console.log('Stream URL:', desktop.stream.getUrl({ authKey }))
+  await desktop.stream.start({ requireAuth: true })
 
-await new Promise((resolve) => setTimeout(resolve, 5000))
+  const authKey = desktop.stream.getAuthKey()
+  console.log(`Stream URL: ${desktop.stream.getUrl({ authKey })}`)
 
-console.log("Moving mouse to 'Applications' and clicking...")
-await desktop.moveMouse(100, 100)
-await desktop.leftClick()
-console.log('Cursor position:', await desktop.getCursorPosition())
+  await new Promise((resolve) => setTimeout(resolve, 5000))
 
-await new Promise((resolve) => setTimeout(resolve, 1000))
+  console.log("Moving mouse to 'Applications' and clicking...")
+  await desktop.moveMouse(100, 100)
+  await desktop.leftClick()
+  console.log(`Cursor position: ${await desktop.getCursorPosition()}`)
 
-const screenshot = await desktop.screenshot()
-writeFileSync('1.png', Buffer.from(screenshot))
+  await new Promise((resolve) => setTimeout(resolve, 1000))
 
-for (let i = 0; i < 20; i++) {
-  const x = Math.floor(Math.random() * 1024)
-  const y = Math.floor(Math.random() * 768)
-  await desktop.moveMouse(x, y)
-  await new Promise((resolve) => setTimeout(resolve, 2000))
-  await desktop.rightClick()
-  console.log('right clicked', i)
+  const screenshot = await desktop.screenshot()
+  writeFileSync(`${provider}.png`, Buffer.from(screenshot))
+
+  for (let i = 0; i < 20; i++) {
+    const x = Math.floor(Math.random() * 1024)
+    const y = Math.floor(Math.random() * 768)
+    await desktop.moveMouse(x, y)
+    await new Promise((resolve) => setTimeout(resolve, 2000))
+    await desktop.rightClick()
+    console.log(`right clicked ${i}`)
+  }
+
+  await desktop.stream.stop()
+  await desktop.destroy()
 }
 
-await desktop.stream.stop()
-await desktop.destroy()
+async function main() {
+  await run('e2b')
+  await run('daytona')
+}
+
+main()
